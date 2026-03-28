@@ -1,0 +1,208 @@
+\documentclass[12pt,addpoints,answers]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{microtype}
+\usepackage{xspace}
+\usepackage[svgnames]{xcolor}
+\usepackage[sc]{mathpazo}
+\usepackage{enumitem}
+\usepackage{bm}
+
+%----------Header--------------------%
+\def\course{{\sc Introduccion a la Criptografia Moderna}}
+\def\term{Depto. de Computaci\'{o}n, FCEN, UBA, 1er. Bimestre 2026}
+\def\prof{Lecturer: Juan Garay}
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{\arabic{page}}
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { \hfill \large{\course} \hfill }
+    \vspace{2mm}
+%    \hbox to 5.78in { \hfill \large{\prof} \hfill }
+%       \vspace{2mm}
+       \hbox to 5.78in { {\Large \hfill \textbf{#5}  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { \term \hfill \emph{#2}}
+       \hbox to 5.78in { {#3 \hfill \emph{#4}}}
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+\newcommand{\hw}[4]{\handout{#1}{#2}{#3}{#4}{Homework #1}}
+
+% -- For ignoring stuff -- %
+\newcommand{\ignore}[1]{}
+
+
+\begin{document}
+
+%----Specs: change accordingly-----%
+\newif\ifstudent % comment out false
+\studenttrue 
+% \studentfalse
+
+\def\hwnum{1}
+\def\issuedate{26/3/26}
+\def\duedate{7/4/25, 23:59 hs} % 
+\def\yourname{} % put your name here
+%------------------------------%
+
+\ifstudent
+\hw{\hwnum}{\issuedate}{Student: \yourname}{Due: \duedate}%
+\else
+\hw{\hwnum}{\issuedate}{\prof}{Due: \duedate}%
+\fi
+
+\noindent \textbf{Instructions}
+
+\begin{itemize}
+    \item Upload your solution to Campus; make sure it's only one file, and clearly write your name on the first page. Name the file \textsf{`$<$your last name$>$\_HW1.pdf.'} 
+    %{\bf Important:} Make sure to tap {\bf Turn in} after you upload your solution.   
+      
+     If you are proficient with \LaTeX, you may also typeset your submission and submit in PDF format. To do so, uncomment the ``\%\textbackslash begin\{solution\}'' and ``\%\textbackslash end\{solution\}'' lines and write your solution between those two command lines.
+    
+      \item Your solutions will be graded on \emph{correctness} and
+    \emph{clarity}. You should only submit work that you believe to be
+    correct.
+    % , and you will get significantly more partial credit if you     clearly identify the gap(s) in your solution.
+    
+    \item You may collaborate with others on this problem set.  However,
+    you must \textbf{{write up your own solutions}} and \textbf{{list
+      your collaborators and any external sources (including ChatGPT and similar generative AI chatbots)}} for each
+    problem. Be ready to explain your solutions orally to a member of the course's staff
+    if asked.
+    
+    \ignore{
+    \item For problems that require you to provide an algorithm, you must
+    give a precise description of the algorithm, together with a proof
+    of correctness and an analysis of its running time. You may use
+    algorithms from class as subroutines. You may also use any facts
+    that we proved in class or from the book.
+    } %IGNORE
+    
+\end{itemize}
+
+
+\noindent This assignment contains \numquestions\ questions,
+% \numpages\ pages
+for a total of \numpoints \ points.
+% and \numbonuspoints\ bonus points.
+
+\bigskip
+%\newpage
+
+\begin{questions}
+
+
+\question We saw the following definition of {\em negligible} functions in class:
+
+{\bf Definition:} 
+{\em A positive function $\mu(n)$ is called {\em negligible} if for any positive polynomial $p(n)$, there exists a constant $n_0$ such that for all $n \geq n_0$ we have $\mu(n) < 1/p(n)$.} 
+
+\begin{parts}
+    \part[6] Determine whether each of the following functions is negligible. Justify your answers.
+    \begin{enumerate}[label=\roman*.]
+        \item $f(n)=2^{-(\log n)(\log\log n)}$
+        \begin{solution}
+            Sin perdida de generalidad asumo que la base del logaritmo es 2, si no lo fuera queda una constante molestando en el exponente pero el argumento es el mismo. \\ \\
+            $2^{-(\log n)(\log\log n)} = (2^{\log n})^{(-\log\log n)} = n^{((-\log\log n))} = \frac{1}{n^{((\log\log n))}}$. \\
+            $\mu(n) = \frac{1}{n^{((\log\log n))}}$ es negligible porque: \\
+            Sea $p(n)$ de grado $g$ tal que $p(n) = an^{g} + bn^{g-1} + \dots + c$ con $g > 0$ y las constantes perteneciente a los reales, siempre para un $n_0$ lo suficientemente grande $\log\log n_0 > g$, por lo que: $n^{\log\log n} > n^{g}$, por lo que $\frac{1}{n^{\log\log n}}< \frac{1}{n^{g}}$  
+        \end{solution}
+        \item $f(n)=n^{-1/n}$
+        \begin{solution}
+            $n^{-1/n} = \frac{1}{n^{1/n}}$. \\ \\
+            $\mu(n) = \frac{1}{n^{1/n}}$ no es negligible porque: \\
+            Como $\lim_{n \to \infty} \frac{1}{n} = 0$, se tiene que $\lim_{n \to \infty} n^{1/n} = 1$, por lo que \\ $\lim_{n \to \infty} \frac{1}{n^{1/n}} = 1$. \\
+            Entonces, para $p(n) = n$, $\nexists\, n_0$ tal que $\forall\, n \geq n_0 \text{: } \frac{1}{n^{1/n}} < \frac{1}{n}$, porque $\lim_{n \to \infty} \frac{1}{n^{1/n}} = 1$, por lo tanto $\frac{1}{n^{1/n}} = 1 > \frac{1}{n}$ para un $n$ grande.
+        \end{solution}
+        \item $f(n)=1/n$ for odd $n$ and $f(n)=2^{-n}$ for even $n$
+        \begin{solution}
+            \[
+            \mu(n) =
+            \begin{cases}
+            \frac{1}{n} & \text{si } n \text{ es impar},\\
+            \frac{1}{2^n} & \text{si } n \text{ es par}.
+            \end{cases}
+            \]
+            $\mu(n)$ no es negligible porque para $p(n) = n^{2}$ no se cumple que: $\exists \ n_0$ tal que $\forall n \geq n_0 \text{:} \ \mu (n) < 1/n^{2}$ porque para todos los $n$ impares $1/n > 1/n^{2}$
+        \end{solution}
+    \end{enumerate}
+    \part[4] We saw that the definition can be restated as follows: 
+
+    {\bf Lemma:} {\em A positive function $\mu(n)$ is {\em negligible} if and only if $\mu(n) \in O(1/p(n))$ for {\em all} positive polynomials $p$.}
+    
+    Prove the reverse ($\impliedby$) direction of this statement.
+    \begin{solution}
+        Que $\mu(n) \in O(1/p(n))$ $\forall$ polinomio positivo $p$ equivale por definición de Big O a decir que:
+        $\exists c > 0,\ \exists n_0 \ \text{tal que} \ \forall n \ge n_0:\ \mu(n) \le \frac{c}{p(n)}$.
+
+        Como vale para todo polinomio positivo, sea $h(n) = (c+1)p(n)$. Entonces,
+        $\mu(n) \le \frac{c}{h(n)} = \frac{c}{(c+1)p(n)} < \frac{1}{p(n)}$.
+
+        Por lo tanto, $\exists n_0$ tal que $\forall n \ge n_0:\ \mu(n) < \frac{1}{p(n)}$, y así $\mu(n)$ es negligible por definición.
+    \end{solution}
+\end{parts}
+
+%\newpage
+
+\question[10] Assume an attacker knows that a user’s password is either \texttt{abcd} or \texttt{bedg}.
+Say the user encrypts his password using the shift cipher, and the attacker sees the resulting ciphertext. Show how the attacker can determine the user’s password, or explain why this is not possible.
+
+% \begin{solution}
+% % Uncomment and type your solution here
+% \end{solution}
+
+%\newpage
+
+\question[10] We proved in class that if a cipher is {\em perfectly secure/secret}, then it is {\em indistinguishable}. Prove the \textbf{opposite} direction. Begin by stating the perfect security and indistinguishability properties.
+% \begin{solution}
+% % Uncomment and type your solution here
+% \end{solution}
+
+%\newpage
+
+\question We look at the different conditions under which the shift and mono-alphabetic substitution ciphers are perfectly secret:
+\begin{parts}
+    \part[4] Prove that if only a single character is encrypted, then the shift cipher is perfectly secret.
+    % \begin{solution}
+    % % Uncomment and type your solution here
+    % \end{solution}
+    \part[3] Does the perfectly secret conditional probability equation hold for the mono-alphabetic substitution cipher? Elaborate.
+    % \begin{solution}
+    % % Uncomment and type your solution here
+    % \end{solution}
+    \part[3] What is the largest message space $\cal M$ for which the mono-alphabetic substitution cipher provides perfect secrecy?
+    % \begin{solution}
+    % % Uncomment and type your solution here
+    % \end{solution}
+\end{parts}
+
+%\newpage
+
+\question[10] Suppose you have a message $m$ of length $n$, but you can only generate random keys of length $k$ and $l$ such that $k + \ell = n - 1$. You decide to generate two random keys and combine them with an additional bit. Does the resulting encryption scheme $E_{k_1,k_2}$, defined as follows, provide perfect secrecy?
+\begin{center}
+      $E_{k_1,k_2}(m) = (k_1\mathbin\Vert 1 \mathbin\Vert k_2) \oplus m$,
+\end{center}
+where $m \in \{0,1\}^n$, $k_1 \in \{0,1\}^k$, $k_2 \in \{0,1\}^\ell$, and $\Vert$ denotes concatenation. What if instead, the message space is modified to only include messages for which the $(k+1)$th bit is $0$ (i.e., $\mathcal{M}=\big\{m_1\mathbin\Vert0\mathbin\Vert m_2\mathbin\big\vert m_1\in\{0,1\}^k,m_2\in\{0,1\}^\ell\big\}$)?
+% \begin{solution}
+% % Uncomment and type your solution here
+% \end{solution}
+
+%\newpage
+
+\question [10] Assume we require only that an encryption scheme $(\mathsf{Gen}, \mathsf{Enc},\mathsf{Dec})$ with message space $\mathcal{M}$ satisfy the following: For all $m \in \mathcal{M}$, we have $Pr[\mathsf{Dec}_K(\mathsf{Enc}_K(m)) = m] \geq 2^{-t}$. (This probability is taken over the choice of the key as well as any randomness used during encryption.) Show that perfect secrecy can be achieved with $|\mathcal{K}| < |\mathcal{M}|$ when $t\geq 1$. 
+
+% \begin{solution}
+% % Uncomment and type your solution here
+% \end{solution}
+
+\end{questions}
+
+\end{document}
