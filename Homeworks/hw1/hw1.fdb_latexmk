@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1774740612.93571 "/home/mati/Facu/1C-2026/ModernCrypto-1C2026/Homeworks/hw1/hw1.tex" "hw1.pdf" "hw1" 1774740614.1097 0
+["pdflatex"] 1774806729.69181 "/home/mati/Facu/1C-2026/ModernCrypto-1C2026/Homeworks/hw1/hw1.tex" "hw1.pdf" "hw1" 1774806730.81251 0
   "/home/mati/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1774733675.4351 475587 96b6037c6bfede06938924bdf748496d ""
   "/home/mati/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt" 1757252349.91773 21086500 65410ffd29d1cdf8b70f453a314b413b ""
   "/home/mati/.miktex/texmfs/install/fonts/enc/dvips/base/8r.enc" 1723058524.99411 4993 1194fb36dfcb11d9ae9802f2b00b60a3 ""
@@ -133,10 +133,10 @@
   "/home/mati/.miktex/texmfs/install/tex/latex/url/url.sty" 1723058536.74211 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/home/mati/.miktex/texmfs/install/tex/latex/xcolor/svgnam.def" 1723058536.84211 4705 ec4d2f4b7125d5a5145cc9aabae1d54b ""
   "/home/mati/.miktex/texmfs/install/tex/latex/xcolor/xcolor.sty" 1723058536.84211 55487 80a65caedd3722f4c20a14a69e785d8f ""
-  "/home/mati/Facu/1C-2026/ModernCrypto-1C2026/Homeworks/hw1/hw1.tex" 1774740610.17186 9588 3f58ed8cd406d3b1dfe8abbbd2b8e23d ""
-  "hw1.aux" 1774740613.86188 2022 18ae8a790b7c16dcabde226a33e4aae7 "pdflatex"
-  "hw1.out" 1774740613.74688 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
-  "hw1.tex" 1774740610.17186 9588 3f58ed8cd406d3b1dfe8abbbd2b8e23d ""
+  "/home/mati/Facu/1C-2026/ModernCrypto-1C2026/Homeworks/hw1/hw1.tex" 1774806727.69032 11781 a8371a2bbedc749cba56fe1c2b526090 ""
+  "hw1.aux" 1774806730.61647 2100 cc84b1314a505b5acfdc061ded585bf4 "pdflatex"
+  "hw1.out" 1774806730.47047 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "hw1.tex" 1774806727.69032 11781 a8371a2bbedc749cba56fe1c2b526090 ""
   (generated)
   "hw1.aux"
   "hw1.log"

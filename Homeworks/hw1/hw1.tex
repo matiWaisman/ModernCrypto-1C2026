@@ -155,16 +155,48 @@ for a total of \numpoints \ points.
 \question[10] Assume an attacker knows that a user’s password is either \texttt{abcd} or \texttt{bedg}.
 Say the user encrypts his password using the shift cipher, and the attacker sees the resulting ciphertext. Show how the attacker can determine the user’s password, or explain why this is not possible.
 
-% \begin{solution}
-% % Uncomment and type your solution here
-% \end{solution}
+\begin{solution}
+    Con las posibles contraseñas no puede pasar que existan dos claves $k_1$ y $k_2$ tales que $Enc(\text{abcd}, k_1) = Enc(\text{bedg}, k_2)$ porque la diferencia entre las letras no es contante: las letras en posiciones impares de cada clave estan a distancia 1, pero las letras en posiciones pares están a distancia 3. Por lo que puede pasar que existan claves que nos den ciphers que son iguales en las posiciones pares (tomando $k_2 = k_1 + 3$) o en las impares (tomando $k_2 = k_1 + 1$), pero no en ambas. \\ \\ 
+    Sabiendo que solo puede ser una de las dos contraseñas la que encripta al resultado, se me ocurren dos formas de verificar cual de las dos contraseñas es la correcta:
+    \begin{itemize}
+        \item La primer opción consiste en, por medio de fuerza bruta (ya que el espacio de claves es muy chico), probar para cada $k \in \{0, \dots , 25\}$ si se cumple:
+        \[
+            dec(\text{ciphertext}, k) = \text{abcd}
+            \quad \text{o} \quad
+            dec(\text{ciphertext}, k) = \text{bedg}.
+        \]
+        A la primera igualdad que valga, se determina cuál de las dos opciones es la contraseña.
+        
+        \item La segunda opción más inteligente es despejar $k_1$ y $k_2 \in \{ 0, \dots 25 \}$ tales que:
+        \[
+            1 + k_1 \equiv c_1 \pmod{26}
+            \quad \text{y} \quad
+            2 + k_2 \equiv c_1 \pmod{26},
+        \]
+        siendo $c_1$ el número asociado a la primera letra del ciphertext. Luego, comprobar si en la siguiente posición al sumar la letra por la clave se llega a la misma letra que el cipher. La clave que consiga las dos igualdades determina cuál de las dos contraseñas era la correcta.
+    \end{itemize}
+\end{solution}
 
 %\newpage
 
 \question[10] We proved in class that if a cipher is {\em perfectly secure/secret}, then it is {\em indistinguishable}. Prove the \textbf{opposite} direction. Begin by stating the perfect security and indistinguishability properties.
-% \begin{solution}
-% % Uncomment and type your solution here
-% \end{solution}
+\begin{solution}
+    Un cifrado es perfecto si y solo si:
+    \[
+        \forall m \in \mathcal{M}, \ \forall c:\quad 
+        \Pr(\text{plaintext} = m \mid \text{ciphertext} = c) = \Pr(\text{plaintext} = m)
+    \]
+    Un cifrado es indistinguible si y solo si:
+    \[
+        \forall m_1, m_2 \in \mathcal{M}, \ \forall c:\quad 
+        \Pr(\text{Enc}(m_1) = c) = \Pr(\text{Enc}(m_2) = c)
+    \]
+    Prueba: \\ 
+    \[ 
+        Pr(plaintext = m|ciphertext = c) = \frac{Pr(plaintext = m \land ciphertext = c)}{Pr(ciphertext = c)} = \\
+        \frac{Pr(Enc(m) = c)}{Pr(ciphertext = c)}
+    \]
+\end{solution}
 
 %\newpage
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.9.7)  28 MAR 2026 20:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.9.7)  29 MAR 2026 14:52
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -616,10 +616,27 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 
+Underfull \hbox (badness 10000) in paragraph at lines 159--162
+
+ []
+
+
 
 [2]
+Underfull \hbox (badness 10000) in paragraph at lines 193--195
+
+ []
+
+
+Overfull \hbox (64.70656pt too wide) detected at line 198
+\OML/zplm/m/it/12 Pr\OT1/zplm/m/n/12 (\OML/zplm/m/it/12 plaintext \OT1/zplm/m/n/12 = \OML/zplm/m/it/12 m\OMS/zplm/m/n/12 j\OML/zplm/m/it/12 ciphertext \OT1/zplm/m/n/12 = \OML/zplm/m/it/12 c\OT1/zplm/m/n/12 ) = [] = [] []
+ []
+
+
 
 [3]
+
+[4]
 This exam contains 6 questions with 5 parts, 0 subparts, and 0 subsubparts.
 This exam has a total of 60 points.
 This exam has a total of 0 bonus points.
@@ -636,17 +653,17 @@ Package rerunfilecheck Info: File `hw1.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 15524 strings out of 475827
- 240691 string characters out of 5778142
- 1942957 words of memory out of 5000000
- 37718 multiletter control sequences out of 15000+600000
- 594807 words of font info for 229 fonts, out of 8000000 for 9000
+ 15544 strings out of 475827
+ 240875 string characters out of 5778142
+ 1944957 words of memory out of 5000000
+ 37723 multiletter control sequences out of 15000+600000
+ 595509 words of font info for 239 fonts, out of 8000000 for 9000
  0 hyphenation exceptions out of 8191
  75i,10n,80p,1058b,871s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </home/mati/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmex10.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr10.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmss12.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmtt12.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/mathpazo/fplmr.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/mathpazo/fplmri.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/fpl/fplrc8a.pfb></home/mati/.miktex/texmfs/install/fonts/type1/public/amsfonts/symbols/msbm10.pfb></home/mati/.miktex/texmfs/install/fonts/type1/urw/palatino/uplb8a.pfb></home/mati/.miktex/texmfs/install/fonts/type1/urw/palatino/uplr8a.pfb></home/mati/.miktex/texmfs/install/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on hw1.pdf (3 pages, 158412 bytes).
+Output written on hw1.pdf (4 pages, 162610 bytes).
 PDF statistics:
- 102 PDF objects out of 1000 (max. 8388607)
- 18 named destinations out of 1000 (max. 500000)
+ 107 PDF objects out of 1000 (max. 8388607)
+ 19 named destinations out of 1000 (max. 500000)
  67073 words of extra memory for PDF output out of 74296 (max. 10000000)
 
