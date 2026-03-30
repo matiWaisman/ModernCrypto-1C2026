@@ -192,10 +192,18 @@ Say the user encrypts his password using the shift cipher, and the attacker sees
         \Pr(\text{Enc}(m_1) = c) = \Pr(\text{Enc}(m_2) = c)
     \]
     Prueba: \\ 
-    \[ 
-        Pr(plaintext = m|ciphertext = c) = \frac{Pr(plaintext = m \land ciphertext = c)}{Pr(ciphertext = c)} = \\
-        \frac{Pr(Enc(m) = c)}{Pr(ciphertext = c)}
-    \]
+    \begin{align*}
+        \Pr(\text{plaintext} = m \mid \text{ciphertext} = c)
+        = \frac{\Pr(\text{plaintext} = m \land \text{ciphertext} = c)}{\Pr(\text{ciphertext} = c)} \\ 
+        = \frac{\Pr(\text{plaintext} = m \land \text{ciphertext} = c)}{\sum_{m'} \Pr(\text{ciphertext} = c \mid \text{plaintext} = m') \Pr(\text{plaintext} = m')} \\
+        = \frac{\Pr(\text{plaintext} = m \land \text{ciphertext} = c)}{\sum_{m'} \Pr(\text{Enc}(m') = c)\, \Pr(\text{plaintext} = m')} \\
+        = \frac{\Pr(\text{plaintext} = m \land \text{ciphertext} = c)}{\sum_{m'} \Pr(\text{Enc}(m) = c)\, \Pr(\text{plaintext} = m')} \quad \text{(por indistinguibilidad)} \\
+        = \frac{\Pr(\text{plaintext} = m \land \text{ciphertext} = c)}{\Pr(\text{Enc}(m) = c)\, \sum_{m'} \Pr(\text{plaintext} = m')}
+        = \frac{\Pr(\text{plaintext} = m \land \text{ciphertext} = c)}{\Pr(\text{Enc}(m) = c)\, \sum_{m'} \Pr(\text{plaintext} = m')} \\
+        = \frac{\Pr(\text{ciphertext} = c \mid \Pr(\text{plaintext} = m)) \ \Pr(\text{plaintext} = m)}{\Pr(\text{Enc}(m) = c)\, \sum_{m'} \Pr(\text{plaintext} = m')} \\ 
+        = \frac{\Pr(\text{Enc}(m) = c) \ \Pr(\text{plaintext} = m)}{\Pr(\text{Enc}(m) = c)\, \sum_{m'} \Pr(\text{plaintext} = m')} \\ 
+        = \frac{\Pr(\text{plaintext} = m)}{1} \\ = \Pr(\text{plaintext} = m)
+    \end{align*}
 \end{solution}
 
 %\newpage
@@ -203,17 +211,32 @@ Say the user encrypts his password using the shift cipher, and the attacker sees
 \question We look at the different conditions under which the shift and mono-alphabetic substitution ciphers are perfectly secret:
 \begin{parts}
     \part[4] Prove that if only a single character is encrypted, then the shift cipher is perfectly secret.
-    % \begin{solution}
-    % % Uncomment and type your solution here
-    % \end{solution}
+    \begin{solution}
+        Asumiendo que se encripta una palabra de un solo caracter: \\ 
+        $\Pr(\text{plaintext} = m \mid \text{ciphertext} = c) = \frac{1}{26}$ (porque hay 26 claves posibles) y \\ 
+        $\Pr(\text{plaintext} = m) = \frac{1}{26}$ (porque hay 26 letras posibles) por lo que vale el cifrado perfecto porque: \\ $\Pr(\text{plaintext} = m \mid \text{ciphertext} = c) = \Pr(\text{plaintext} = m)$
+    \end{solution}
     \part[3] Does the perfectly secret conditional probability equation hold for the mono-alphabetic substitution cipher? Elaborate.
-    % \begin{solution}
-    % % Uncomment and type your solution here
-    % \end{solution}
+    \begin{solution}
+        $\Pr(\text{plaintext} = m) = \frac{1}{26^n}$ con $n = \text{longitud del mensaje}$. \\
+        Pero si ya sabemos el ciphertext, hay muchos menos posibles plaintexts. Por ejemplo, si sabemos que el ciphertext es acdc, entonces el plaintext debe tener el mismo patrón (es decir, el segundo carácter es igual al cuarto). 
+        
+        En ese caso, si $m$ es un mensaje de longitud 4 que sigue ese patrón: \\
+        $\Pr(\text{plaintext} = m \mid \text{ciphertext} = \text{acdc}) = \frac{1}{26 \times 25 \times 24}$.
+        En cambio, si $m$ no sigue ese patrón,
+        $\Pr(\text{plaintext} = m \mid \text{ciphertext} = \text{acdc}) = 0$.
+        
+        En ambos casos, la probabilidad resultante es distinta de $\frac{1}{26^{4}}$. \\ 
+        Por lo tanto, el mono-alphabetic substitution cipher no es perfectamente secreto. 
+    \end{solution}
     \part[3] What is the largest message space $\cal M$ for which the mono-alphabetic substitution cipher provides perfect secrecy?
-    % \begin{solution}
-    % % Uncomment and type your solution here
-    % \end{solution}
+    \begin{solution}
+        Si limitamos el espacio de mensajes a mensajes que no tengan caracteres repetidos, aun así el cifrado no es perfecto. Porque aunque no haya letras repetidas, el ciphertext sigue revelando información sobre la estructura del mensaje (por ejemplo, que todos los caracteres son distintos). 
+        
+        Entonces, mientras el mensaje tenga longitud mayor a 1, conocer el ciphertext permite descartar posibles plaintexts, por lo que no se cumple perfect secrecy. 
+        
+        Por lo tanto, el mayor espacio de mensajes $\mathcal{M}$ para el cual el mono-alphabetic substitution cipher es perfectamente secreto es el de mensajes de longitud 1.
+    \end{solution}
 \end{parts}
 
 %\newpage
