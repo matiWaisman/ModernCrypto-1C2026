@@ -286,9 +286,20 @@ where $m \in \{0,1\}^n$, $k_1 \in \{0,1\}^k$, $k_2 \in \{0,1\}^\ell$, and $\Vert
 
 \question [10] Assume we require only that an encryption scheme $(\mathsf{Gen}, \mathsf{Enc},\mathsf{Dec})$ with message space $\mathcal{M}$ satisfy the following: For all $m \in \mathcal{M}$, we have $Pr[\mathsf{Dec}_K(\mathsf{Enc}_K(m)) = m] \geq 2^{-t}$. (This probability is taken over the choice of the key as well as any randomness used during encryption.) Show that perfect secrecy can be achieved with $|\mathcal{K}| < |\mathcal{M}|$ when $t\geq 1$. 
 
-% \begin{solution}
-% % Uncomment and type your solution here
-% \end{solution}
+\begin{solution} 
+    El esquema seria:
+    \begin{itemize}
+        \item $\mathcal{M} = \{0,1\}^{n}$
+        \item $\mathcal{K} = \{0,1\}^{t-1}$, con $1 \leq t < n$
+        \item $Gen():$ devuelve $k \in \{0,1\}^{n-t}$ elegido de manera uniforme.
+        \item $Enc(m)_k:$ sean $m = m_1m_2$ donde $|m_1| = n-t$ y $|m_2| = t$ devuelve $m1 \oplus k$.
+        \item $Dec(m)_k:$ sea $y = \{0,1\}^t$ elegido de manera uniforme devuelve $(m \oplus k)y$
+    \end{itemize}
+    Se cumplen las propiedades porque: 
+    \begin{itemize}
+        \item $|\mathcal{M}| = 2^n$, $|\mathcal{K}| = 2^{n-t}$ y como $1 \leq t < n \implies |\mathcal{K}| < |\mathcal{M}|$
+    \end{itemize}
+\end{solution}
 
 \end{questions}
 
