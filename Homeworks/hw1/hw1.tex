@@ -110,10 +110,10 @@ for a total of \numpoints \ points.
     \begin{enumerate}[label=\roman*.]
         \item $f(n)=2^{-(\log n)(\log\log n)}$
         \begin{solution}
-            Sin perdida de generalidad asumo que la base del logaritmo es 2, si no lo fuera queda una constante molestando en el exponente pero el argumento es el mismo. \\ \\
+            Sin pérdida de generalidad asumo que la base del logaritmo es 2, si no lo fuera queda una constante molestando en el exponente pero el argumento es el mismo. \\ \\
             $2^{-(\log n)(\log\log n)} = (2^{\log n})^{(-\log\log n)} = n^{((-\log\log n))} = \frac{1}{n^{((\log\log n))}}$. \\
             $\mu(n) = \frac{1}{n^{((\log\log n))}}$ \textbf{es negligible} porque: \\
-            Sea $p(n)$ de grado $g$ tal que $p(n) = an^{g} + bn^{g-1} + \dots + c$ con $g > 0$ y las constantes perteneciente a los reales, siempre para un $n_0$ lo suficientemente grande $\log\log n_0 > g$, por lo que: $n^{\log\log n} > n^{g}$, por lo que $\frac{1}{n^{\log\log n}}< \frac{1}{n^{g}}$  
+            Sea $p(n)$ de grado $g$ tal que $p(n) = an^{g} + bn^{g-1} + \dots + c$ con $g > 0$ y las constantes pertenecientes a los reales, siempre para un $n_0$ lo suficientemente grande $\log\log n_0 > g$, por lo que: $n^{\log\log n} > n^{g}$, por lo que $\frac{1}{n^{\log\log n}}< \frac{1}{n^{g}}$  
         \end{solution}
         \item $f(n)=n^{-1/n}$
         \begin{solution}
@@ -156,10 +156,10 @@ for a total of \numpoints \ points.
 Say the user encrypts his password using the shift cipher, and the attacker sees the resulting ciphertext. Show how the attacker can determine the user’s password, or explain why this is not possible.
 
 \begin{solution}
-    Con las posibles contraseñas no puede pasar que existan dos claves $k_1$ y $k_2$ tales que $Enc(\text{abcd}, k_1) = Enc(\text{bedg}, k_2)$ porque la diferencia entre las letras no es contante: las letras en posiciones impares de cada clave estan a distancia 1, pero las letras en posiciones pares están a distancia 3. Por lo que puede pasar que existan claves que nos den ciphers que son iguales en las posiciones pares (tomando $k_2 = k_1 + 3$) o en las impares (tomando $k_2 = k_1 + 1$), pero no en ambas. \\ \\ 
-    Sabiendo que solo puede ser una de las dos contraseñas la que encripta al resultado, se me ocurren dos formas de verificar cual de las dos contraseñas es la correcta:
+    Con las posibles contraseñas no puede pasar que existan dos claves $k_1$ y $k_2$ tales que $Enc(\text{abcd}, k_1) = Enc(\text{bedg}, k_2)$ porque la diferencia entre las letras no es constante: las letras en posiciones impares de cada clave están a distancia 1, pero las letras en posiciones pares están a distancia 3. Por lo que puede pasar que existan claves que nos den ciphers que son iguales en las posiciones pares (tomando $k_2 = k_1 + 3$) o en las impares (tomando $k_2 = k_1 + 1$), pero no en ambas. \\ \\ 
+    Sabiendo que solo puede ser una de las dos contraseñas la que encripta al resultado, se me ocurren dos formas de verificar cuál de las dos contraseñas es la correcta:
     \begin{itemize}
-        \item La primer opción consiste en, por medio de fuerza bruta (ya que el espacio de claves es muy chico), probar para cada $k \in \{0, \dots , 25\}$ si se cumple:
+        \item La primera opción consiste en, por medio de fuerza bruta (ya que el espacio de claves es muy chico), probar para cada $k \in \{0, \dots , 25\}$ si se cumple:
         \[
             dec(\text{ciphertext}, k) = \text{abcd}
             \quad \text{o} \quad
@@ -212,7 +212,7 @@ Say the user encrypts his password using the shift cipher, and the attacker sees
 \begin{parts}
     \part[4] Prove that if only a single character is encrypted, then the shift cipher is perfectly secret.
     \begin{solution}
-        Asumiendo que se encripta una palabra de un solo caracter: \\ 
+        Asumiendo que se encripta una palabra de un solo carácter: \\ 
         $\Pr(\text{plaintext} = m \mid \text{ciphertext} = c) = \frac{1}{26}$ (porque hay 26 claves posibles) y \\ 
         $\Pr(\text{plaintext} = m) = \frac{1}{26}$ (porque hay 26 letras posibles) por lo que vale el cifrado perfecto porque: \\ $\Pr(\text{plaintext} = m \mid \text{ciphertext} = c) = \Pr(\text{plaintext} = m)$
     \end{solution}
@@ -231,11 +231,12 @@ Say the user encrypts his password using the shift cipher, and the attacker sees
     \end{solution}
     \part[3] What is the largest message space $\cal M$ for which the mono-alphabetic substitution cipher provides perfect secrecy?
     \begin{solution}
-        Si limitamos el espacio de mensajes a mensajes que no tengan caracteres repetidos, aun así el cifrado no es perfecto. Porque aunque no haya letras repetidas, el ciphertext sigue revelando información sobre la estructura del mensaje (por ejemplo, que todos los caracteres son distintos). 
-        
-        Entonces, mientras el mensaje tenga longitud mayor a 1, conocer el ciphertext permite descartar posibles plaintexts, por lo que no se cumple perfect secrecy. 
-        
-        Por lo tanto, el mayor espacio de mensajes $\mathcal{M}$ para el cual el mono-alphabetic substitution cipher es perfectamente secreto es el de mensajes de longitud 1.
+        El espacio de mensajes $\mathcal{M}$ más grande en el que se cumple perfect secrecy para el cifrado es en el cual limitamos el espacio de mensajes a mensajes que no tengan caracteres repetidos. \\ 
+        De esta forma, como cada letra puede ser encriptada a una sola opción, ver un mensaje cifrado no te da información acerca del plaintext, ya que cualquier letra pudo haber sido cifrada a la que se está viendo. \\ 
+        Por lo tanto, sea $m \in \mathcal{M}$ tal que $|m| = n$ con $1 \leq n \leq 26$: 
+        \[
+            \Pr(\text{plaintext} = m) = \Pr(\text{plaintext} = m \mid \text{ciphertext} = c) = \frac{1}{\prod_{i=0}^{n-1}(26-i)}
+        \]
     \end{solution}
 \end{parts}
 
@@ -287,10 +288,10 @@ where $m \in \{0,1\}^n$, $k_1 \in \{0,1\}^k$, $k_2 \in \{0,1\}^\ell$, and $\Vert
 \question [10] Assume we require only that an encryption scheme $(\mathsf{Gen}, \mathsf{Enc},\mathsf{Dec})$ with message space $\mathcal{M}$ satisfy the following: For all $m \in \mathcal{M}$, we have $Pr[\mathsf{Dec}_K(\mathsf{Enc}_K(m)) = m] \geq 2^{-t}$. (This probability is taken over the choice of the key as well as any randomness used during encryption.) Show that perfect secrecy can be achieved with $|\mathcal{K}| < |\mathcal{M}|$ when $t\geq 1$. 
 
 \begin{solution} 
-    El esquema seria:
+    El esquema sería:
     \begin{itemize}
         \item $\mathcal{M} = \{0,1\}^{n}$
-        \item $\mathcal{K} = \{0,1\}^{t-1}$, con $1 \leq t < n$
+        \item $\mathcal{K} = \{0,1\}^{t-n}$, con $1 \leq t < n$
         \item $Gen():$ devuelve $k \in \{0,1\}^{n-t}$ elegido de manera uniforme.
         \item $Enc(m)_k:$ sean $m = m_1m_2$ donde $|m_1| = n-t$ y $|m_2| = t$ devuelve $m1 \oplus k$.
         \item $Dec(m)_k:$ sea $y = \{0,1\}^t$ elegido de manera uniforme devuelve $(m \oplus k)y$
@@ -298,6 +299,17 @@ where $m \in \{0,1\}^n$, $k_1 \in \{0,1\}^k$, $k_2 \in \{0,1\}^\ell$, and $\Vert
     Se cumplen las propiedades porque: 
     \begin{itemize}
         \item $|\mathcal{M}| = 2^n$, $|\mathcal{K}| = 2^{n-t}$ y como $1 \leq t < n \implies |\mathcal{K}| < |\mathcal{M}|$
+        \item En el ciphertext no hay información acerca de los últimos $t$ bits del mensaje, ya que estos se "pierden" en el cifrado. 
+        Por otro lado, los primeros $n-t$ bits se cifran como un one-time pad (que sabemos que es perfectamente secreto), por lo que el ciphertext no revela información sobre el mensaje encriptado ni sobre la clave. Por eso se cumple que
+        \[
+        \Pr(\text{plaintext}=m \mid \text{ciphertext}=c)=\Pr(\text{plaintext}=m)=\tfrac{1}{2^n}.
+        \]
+        Por lo tanto, el esquema propuesto es perfectamente secreto.
+        \item Como en el desencriptado se puede recuperar la primer cadena de longitud $n-t$ del mensaje encriptado, pero el resto del mensaje es elegido de manera aleatoria, la probabilidad de al descifrar el mensaje nos devuelva el original va a ser: 
+        \[
+        Pr[\mathsf{Dec}_K(\mathsf{Enc}_K(m)) = m] = \frac{1}{2^t}
+        \]
+        Por lo que se cumple que: $Pr[\mathsf{Dec}_K(\mathsf{Enc}_K(m)) = m] \geq 2^{-t}$.
     \end{itemize}
 \end{solution}
 
