@@ -1,0 +1,312 @@
+\documentclass[12pt,addpoints,answers]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{microtype}
+\usepackage{xspace}
+\usepackage[svgnames]{xcolor}
+\usepackage[sc]{mathpazo}
+\usepackage{enumitem}
+\usepackage{bm}
+
+%----------Header--------------------%
+\def\course{{\sc Introduccion a la Criptografia Moderna}}
+\def\term{Depto. de Computaci\'{o}n, FCEN, UBA, 1er. Bimestre 2026}
+\def\prof{Lecturer: Juan Garay}
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{\arabic{page}}
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { \hfill \large{\course} \hfill }
+    \vspace{2mm}
+%    \hbox to 5.78in { \hfill \large{\prof} \hfill }
+%       \vspace{2mm}
+       \hbox to 5.78in { {\Large \hfill \textbf{#5}  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { \term \hfill \emph{#2}}
+       \hbox to 5.78in { {#3 \hfill \emph{#4}}}
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+\newcommand{\hw}[4]{\handout{#1}{#2}{#3}{#4}{Homework #1}}
+
+% -- For ignoring stuff -- %
+\newcommand{\ignore}[1]{}
+
+
+\begin{document}
+
+%----Specs: change accordingly-----%
+\newif\ifstudent % comment out false
+\studenttrue 
+% \studentfalse
+
+\def\hwnum{2}
+\def\issuedate{14/4/26}
+\def\duedate{23/4/25, 23:59 hs} % 
+\def\yourname{Matías Eliel Waisman} % put your name here
+%------------------------------%
+
+\ifstudent
+\hw{\hwnum}{\issuedate}{Student: \yourname}{Due: \duedate}%
+\else
+\hw{\hwnum}{\issuedate}{\prof}{Due: \duedate}%
+\fi
+
+\noindent \textbf{Instructions}
+
+\begin{itemize}
+    \item Upload your solution to Campus; make sure it's only one file, and clearly write your name on the first page. Name the file \textsf{`$<$your last name$>$\_HW2.pdf.'} 
+    %{\bf Important:} Make sure to tap {\bf Turn in} after you upload your solution.   
+      
+     If you are proficient with \LaTeX, you may also typeset your submission and submit in PDF format. To do so, uncomment the ``\%\textbackslash begin\{solution\}'' and ``\%\textbackslash end\{solution\}'' lines and write your solution between those two command lines.
+    
+      \item Your solutions will be graded on \emph{correctness} and
+    \emph{clarity}. You should only submit work that you believe to be
+    correct.
+    % , and you will get significantly more partial credit if you     clearly identify the gap(s) in your solution.
+    
+    \item You may collaborate with others on this problem set.  However,
+    you must \textbf{{write up your own solutions}} and \textbf{{list
+      your collaborators and any external sources (including ChatGPT and similar generative AI chatbots)}} for each
+    problem. Be ready to explain your solutions orally to a member of the course's staff
+    if asked.
+    
+    \ignore{
+    \item For problems that require you to provide an algorithm, you must
+    give a precise description of the algorithm, together with a proof
+    of correctness and an analysis of its running time. You may use
+    algorithms from class as subroutines. You may also use any facts
+    that we proved in class or from the book.
+    } %IGNORE
+    
+\end{itemize}
+
+
+\noindent This assignment contains \numquestions\ questions,
+% \numpages\ pages
+for a total of \numpoints \ points.
+% and \numbonuspoints\ bonus points.
+
+\bigskip
+%\newpage
+
+\begin{questions}
+
+
+\question Let $F$ be a pseudorandom permutation. For each of the following encryption schemes (where the key is a uniform $k\in\{0,1\}^n$), show how to decrypt and then state whether the scheme is CPA-secure. Explain your answers.
+\begin{parts}
+    \part[5] To encrypt $m\in\{0,1\}^n$, choose uniform $r\in\{0,1\}^n$ and output the ciphertext $\langle r,F_k(m)\oplus r\rangle$.
+    \begin{solution}
+        $Dec(c)_k:$ sea $c =\langle r,s\rangle$ donde $s=F_k(m)\oplus r$ devuelve $F_k^{-1}(s \oplus r)$. \\ \\ 
+        En el desafío de indistinguibilidad, como el ciphertext $c$ revela $F_k(m_b)$, el atacante puede acceder al oráculo y calcular $F_k(m_0)$ y $F_k(m_1)$ y siempre determinar cuál de los dos mensajes fue encriptado. Por lo que \textbf{el esquema no es CPA seguro}.    
+    \end{solution}
+    \part[5] To encrypt $m\in\{0,1\}^n$, choose uniform $r\in\{0,1\}^n$ and output the ciphertext $\langle r,F_r(k)\oplus m\rangle$.
+    \begin{solution}
+        $Dec(c)_k:$ sea $c =\langle r,s\rangle$ donde $s=F_r(k)\oplus m$ devuelve $s \oplus F_r(k)$. \\ \\ 
+        \textbf{El esquema no es CPA seguro}, el atacante al tener acceso al oráculo de encriptación puede pedir que se encripte $0^n$, y gracias a eso obtener $F_{r^\prime}(k)$, (con $r \neq r^\prime$). Como las pseudorandom permutation son inversibles, al conocer $r^\prime$ y $F_{r^\prime}(k)$ puede calcular $k$. \\ 
+        Una vez conocido el valor de $k$ y $r$, puede calcular $m = s \oplus F_r(k)$ logrando determinar siempre cuál de los dos mensajes fue encriptado.
+    \end{solution}
+\end{parts}
+
+
+\question[10] Show that the encryption scheme presented in Lecture 5 (p. 21) is CCA-secure.
+\begin{solution}
+    El esquema presentado es CCA seguro porque:
+    \begin{enumerate}
+        \item El atacante no puede obtener información útil cifrando mensajes levemente distintos a los originales. Esto se debe a que, al cifrar un mensaje, se cifra con con una permutación pseudoaleatoria el plaintext junto a una cadena $r$ elegida uniformemente al azar. Por lo tanto, incluso al encriptar dos veces el mismo mensaje se obtienen ciphertexts distintos, de los cuales el atacante no puede extraer información relevante. Por eso, estrategias como modificar bits de $m_1$ y $m_2$ no le permiten distinguir cuál de los dos mensajes fue cifrado. 
+    
+        \item La seguridad frente a un chosen ciphertext attack proviene de que el atacante tampoco puede obtener información modificando levemente el ciphertext para aproximarse a cuál de los dos mensajes fue cifrado. Esto ocurre porque el algoritmo de desencriptación verifica que el último bloque sea igual a $0^n$. Para un ciphertext que no fue generado por el esquema, la probabilidad de que al desencriptarlo el último bloque resulte ser $0^n$ es $\frac{1}{2^n}$, la cual es una función despreciable. Por lo tanto, las modificaciones del ciphertext serán inútiles, y el oráculo de desencriptación no le va a brindar información útil al atacante.
+    \end{enumerate}
+    Como ni el oráculo de encriptación, ni el de desencriptación le aportan información útil al atacante, no le queda mejor probabilidad que adivinar al azar cuál de los dos mensajes fue cifrado. 
+\end{solution}
+
+
+\question Prove that the following modifications of basic CBC-MAC {\bf do not} yield a secure MAC (even for fixed-length messages):
+\begin{parts}
+    \part[5] {\sf Mac} outputs all blocks $t_1,\ldots,t_\ell$, rather than just $t_\ell$. (Verification only checks whether $t_\ell$ is correct.)
+    \begin{solution}
+        Sea $M = (M_1, M_2)$ un mensaje de dos bloques. Al consultar $Mac_k(M)$ el adversario obtiene $t_1$ y $t_2$ tales que: 
+        \[
+            t_1 = E_k(M_1) \text{ y } t_2 = E_k(t_1 \oplus M_2)
+        \]
+        Luego elige un bloque inicial nuevo $M^\prime_1 \neq M_1$ y consulta al oráculo sobre $M^{\prime}_1$ obteniendo:
+        \[
+            t^\prime_1 = E_k(M^\prime_1)
+        \]
+        Define el mensaje $M^{\prime} = (M^{\prime}_1, M^{\prime}_2)$ donde:
+        \[
+            M^{\prime}_2 = M_2 \oplus t_1 \oplus t^{\prime}_1
+        \]
+        El CBC-MAC de $M'$ es:
+        \[
+            t^\prime_2 = E_k(t^\prime_1 \oplus M^{\prime}_2) 
+            = E_k(t^\prime_1 \oplus M_2 \oplus t_1 \oplus t^{\prime}_1) 
+            = E_k(M_2 \oplus t_1) 
+            = t_2
+        \]
+       De esta forma el adversario logra formar un nuevo par $(M^\prime, t)$ válidos, rompiendo la seguridad del CBC Mac.
+    \end{solution}
+    \part[5] A random initial block is used each time a message is authenticated. That is, choose uniform $t_0\in\{0,1\}^n$, run basic CBC-MAC over the ``message'' $t_0,m_1,\ldots,m_\ell$, and output the tag $\langle t_0,t_\ell\rangle$. Verification is done in the natural way.
+    \begin{solution}
+        Sea $M = (M_1)$ un mensaje de un bloque. Al consultar $Mac_k(M)$ el adversario obtiene $(t_0,t_1)$ tales que
+        \[
+            t_0 \in \{0,1\}^n \text{ elegido uniformemente al azar, y } t_1 = E_k(t_0 \oplus M_1).
+        \]
+    
+        Luego el adversario elige cualquier $t_0' \neq t_0$ y define el mensaje de un bloque $M'=M_1'$ donde
+        \[
+            M_1' = M_1 \oplus t_0 \oplus t_0'.
+        \]
+    
+        El CBC-MAC de $M'$ usando $t_0'$ es:
+        \[
+            t_1' = E_k(t_0' \oplus M_1')
+            = E_k(t_0' \oplus M_1 \oplus t_0 \oplus t_0')
+            = E_k(M_1 \oplus t_0)
+            = t_1.
+        \]
+    
+        De esta forma el adversario obtiene un nuevo mensaje $M' \neq M$ tal que el par $(t_0', t_1)$ es un tag válido para $M'$, sin haber consultado $Mac_k(M')$. Rompiendo la seguridad del CBC Mac.
+    
+        
+    \end{solution}
+\end{parts}
+
+
+\question
+\begin{parts}
+
+\part[5] Provide formal security definitions for {\em second preimage resistance} and {\em preimage resistance} of hash functions, similar to the definition of collision resistance we saw in Lecture 6. 
+\begin{solution}
+    El experimento de buscar la segunda preimagen \\
+    $\text{Hash-second-preimage}_{A,\Pi}(n)$:
+    \begin{enumerate}
+        \item Se genera una clave $s$ al correr $s \leftarrow \text{Gen}(1^n)$.
+        \item Se elige una cadena $x \in \{0,1\}^{\ell'(n)}$ de manera uniforme al azar.
+        \item El adversario $A$ obtiene $(s,x)$ y devuelve una cadena $x'$.
+        \item El experimento devuelve 1 si y solo si $x' \neq x$ y $H^s(x') = H^s(x)$.
+    \end{enumerate}
+    \[
+    \Pr\left[\text{Hash-second-preimage}_{A,\Pi}(n) = 1\right] \leq \text{negl}(n).
+    \] \\\\ 
+    El experimento de resistencia a la preimagen: \\
+    $\text{Hash-preimage}_{A,\Pi}(n)$:
+    \begin{enumerate}
+        \item Se genera una clave $s$ al correr $s \leftarrow \text{Gen}(1^n)$.
+        \item Se elige una cadena $x \in \{0,1\}^{\ell'(n)}$ de manera uniforme al azar y se computa $y = H^s(x)$.
+        \item El adversario $A$ obtiene $(s,y)$ y devuelve una cadena $x'$.
+        \item El experimento devuelve 1 si y solo si $H^s(x') = y$.
+    \end{enumerate}
+    
+    \[
+    \Pr\left[\text{Hash-preimage}_{A,\Pi}(n) = 1\right] \leq \text{negl}(n).
+    \]
+\end{solution}
+\part[5] Prove that any hash function that is collision resistant is second-preimage resistant, and any hash function that is second-preimage resistant is preimage resistant.
+\begin{solution}
+    Prueba collision resistant $\implies$ second preimage resistant: \\
+    Supongamos que $H$ es collision resistant pero no es second preimage resistant. 
+    Entonces existe un adversario $A$ que, dado $x \in \{0,1\}^{\ell'(n)}$ elegido uniformemente al azar, encuentra un $x' \neq x$ tal que $H(x) = H(x')$ con probabilidad no despreciable. \\
+
+    Entonces existe un adversario $B$ que rompe collision resistance:
+    \begin{enumerate}
+        \item Elige $x \in \{0,1\}^{\ell'(n)}$ uniformemente al azar.
+        \item Ejecuta $A(x)$ para obtener $x'$.
+        \item Devuelve $(x, x')$.
+    \end{enumerate}
+
+     El adversario $B$ con probabilidad no despreciable cumple que $x \neq x'$ y $H(x) = H(x')$, por lo que $B$ encuentra una colisión, contradiciendo que $H$ es collision resistant. \\
+
+    Absurdo, por lo que $H$ es second preimage resistant. \\\\ 
+
+    Prueba second preimage resistant $\implies$ preimage resistant: \\
+    Supongamos que $H$ es second preimage resistant pero no es preimage resistant. 
+    Entonces existe un adversario $A$ que, dado el par $(s,y)$ con $y = H^s(x)$ con $x \in \{0,1\}^{\ell'(n)}$ generado de manera uniforme al azar, puede encontrar una cadena $x'$ tal que $y = H^s(x')$ con probabilidad no despreciable. \\
+
+    Entonces existe un adversario $B$ que rompe second preimage resistance:
+     \begin{enumerate}
+        \item Recibe un par $(s, x)$ elegidos uniformemente al azar.
+        \item Ejecuta $A(s, H^s(x))$ para obtener $x'$.
+        \item Devuelve $x'$.
+    \end{enumerate}
+
+    Con probabilidad no despreciable el adversario $B$ cumple que $x' \neq x$ y $H^s(x') = H^s(x)$, por lo que $B$ encuentra otro elemento con la misma preimagen, contradiciendo que $H$ es second preimage resistant. \\
+
+    Absurdo, por lo que $H$ es preimage resistant. \\\\ 
+\end{solution}
+\end{parts}
+
+\question[10] Show how to find a collision in the Merkle tree construction if $t$ is not fixed. Specifically, show how to find two sets of inputs $x_1,\ldots,x_t$ and $x'_1,\ldots,x'_{2t}$ such that ${\cal MT}_t(x_1,\ldots,x_t)={\cal MT}_{2t}(x'_1,\ldots,x'_{2t})$.
+\begin{solution}
+    Arrancando de un ejemplo concreto, sea $t = 2$ con inputs 
+    $x_1, x_2$ y $x'_1, x'_2, x'_3, x'_4$ tenemos:
+    
+    \[
+    MT_4(x'_1, x'_2, x'_3, x'_4)
+    =
+    H\Big(
+        H\big( H(x'_1)\,\|\,H(x'_2) \big)
+        \,\Big\|\,
+        H\big( H(x'_3)\,\|\,H(x'_4) \big)
+    \Big)
+    \]
+    
+    Definimos:
+    \[
+    x_1 = H(x'_1)\,\|\,H(x'_2), 
+    \qquad
+    x_2 = H(x'_3)\,\|\,H(x'_4)
+    \]
+    
+    Entonces:
+    \[
+    H(x_1) = H\big( H(x'_1)\,\|\,H(x'_2) \big),
+    \qquad
+    H(x_2) = H\big( H(x'_3)\,\|\,H(x'_4) \big)
+    \]
+    
+    y por lo tanto:
+   \[
+    \begin{aligned}
+        MT_2(x_1, x_2)
+        &= H\big( H(x_1)\,\|\,H(x_2) \big) \\
+        &= H\Big(
+            H\big( H(x'_1)\,\|\,H(x'_2) \big)
+            \,\Big\|\,
+            H\big( H(x'_3)\,\|\,H(x'_4) \big)
+        \Big) \\
+        &= MT_4(x'_1, x'_2, x'_3, x'_4)
+    \end{aligned}
+    \]
+    
+    Para el caso general, dados $x'_1, \ldots, x'_{2t}$, para cada 
+    $i \in \{1, \ldots, t\}$ definimos:
+    \[
+    x_i = H(x'_{2i-1})\,\|\,H(x'_{2i})
+    \]
+    
+    Entonces:
+    \[
+    H(x_i) = H\big( H(x'_{2i-1})\,\|\,H(x'_{2i}) \big),
+    \]
+    por lo que
+    \[
+    MT_t(x_1, \ldots, x_t)
+    =
+    MT_{2t}(x'_1, \ldots, x'_{2t})
+    \]
+    
+    Esto muestra que si $t$ no es fijo, la construcción de los merkle trees no es collision resistant, ya que siempre es posible construir un árbol de menor tamaño reutilizando los nodos internos de un árbol más grande como hojas, obteniendo así dos árboles distintos con la misma raíz. 
+\end{solution}
+
+
+\end{questions}
+
+\end{document}
