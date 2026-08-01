@@ -1,0 +1,256 @@
+\documentclass[12pt,addpoints,answers]{exam}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{fullpage}
+\usepackage{microtype}
+\usepackage{xspace}
+\usepackage[svgnames]{xcolor}
+\usepackage[sc]{mathpazo}
+\usepackage{enumitem}
+\usepackage{bm}
+
+%----------Header--------------------%
+\def\course{{\sc Introduccion a la Criptografia Moderna}}
+\def\term{Depto. de Computaci\'{o}n, FCEN, UBA, 1er. Bimestre 2026}
+\def\prof{Lecturer: Juan Garay}
+\newcommand{\handout}[5]{
+   \renewcommand{\thepage}{\arabic{page}}
+   \begin{center}
+   \framebox{
+      \vbox{
+    \hbox to 5.78in { \hfill \large{\course} \hfill }
+    \vspace{2mm}
+%    \hbox to 5.78in { \hfill \large{\prof} \hfill }
+%       \vspace{2mm}
+       \hbox to 5.78in { {\Large \hfill \textbf{#5}  \hfill} }
+       \vspace{2mm}
+       \hbox to 5.78in { \term \hfill \emph{#2}}
+       \hbox to 5.78in { {#3 \hfill \emph{#4}}}
+      }
+   }
+   \end{center}
+   \vspace*{4mm}
+}
+\newcommand{\hw}[4]{\handout{#1}{#2}{#3}{#4}{Homework #1}}
+
+% -- For ignoring stuff -- %
+\newcommand{\ignore}[1]{}
+
+
+\begin{document}
+
+%----Specs: change accordingly-----%
+\newif\ifstudent % comment out false
+\studenttrue 
+% \studentfalse
+
+\def\hwnum{3}
+\def\issuedate{28/4/26}
+\def\duedate{12/5/26, 23:59 hs} % 
+\def\yourname{Matías Eliel Waisman} % put your name here
+%------------------------------%
+
+\ifstudent
+\hw{\hwnum}{\issuedate}{Student: \yourname}{Due: \duedate}%
+\else
+\hw{\hwnum}{\issuedate}{\prof}{Due: \duedate}%
+\fi
+
+\noindent \textbf{Instructions}
+
+\begin{itemize}
+    \item Upload your solution to Campus; make sure it's only one file, and clearly write your name on the first page. Name the file \textsf{`$<$your last name$>$\_HW3.pdf.'} 
+    %{\bf Important:} Make sure to tap {\bf Turn in} after you upload your solution.   
+      
+     If you are proficient with \LaTeX, you may also typeset your submission and submit in PDF format. To do so, uncomment the ``\%\textbackslash begin\{solution\}'' and ``\%\textbackslash end\{solution\}'' lines and write your solution between those two command lines.
+    
+      \item Your solutions will be graded on \emph{correctness} and
+    \emph{clarity}. You should only submit work that you believe to be
+    correct.
+    % , and you will get significantly more partial credit if you     clearly identify the gap(s) in your solution.
+    
+    \item You may collaborate with others on this problem set.  However,
+    you must \textbf{{write up your own solutions}} and \textbf{{list
+      your collaborators and any external sources (including ChatGPT and similar generative AI chatbots)}} for each
+    problem. Be ready to explain your solutions orally to a member of the course's staff
+    if asked.
+    
+    \ignore{
+    \item For problems that require you to provide an algorithm, you must
+    give a precise description of the algorithm, together with a proof
+    of correctness and an analysis of its running time. You may use
+    algorithms from class as subroutines. You may also use any facts
+    that we proved in class or from the book.
+    } %IGNORE
+    
+\end{itemize}
+
+
+\noindent This assignment contains \numquestions\ questions,
+% \numpages\ pages
+for a total of \numpoints \ points.
+% and \numbonuspoints\ bonus points.
+
+\bigskip
+%\newpage
+
+\begin{questions}
+
+\question[10] Consider the following key-exchange protocol:
+\begin{enumerate}[label=(\alph*)]
+    \item Alice chooses uniform $k,r\in\{0,1\}^n$, and sends $s:=k\oplus r$ to Bob.
+    \item Bob chooses uniform $t\in\{0,1\}^n$, and sends $u:=s\oplus t$ to Alice.
+    \item Alice computes $w:=u\oplus r$ and sends $w$ to Bob.
+    \item Alice outputs $k$ and Bob outputs $w\oplus t$.
+\end{enumerate}
+Show that Alice and Bob output the same key. Analyze the security of the scheme (i.e., either prove its security or show a concrete attack).
+\begin{solution}
+    Alice y Bob devuelven la misma clave $k$, porque $w \oplus t = u \oplus r \oplus t = s \oplus t \oplus r \oplus t = s \oplus r = k \oplus r \oplus r = k$. \\ 
+    El esquema no es seguro, un eavesdropper puede conseguir la clave $k$: \\ 
+    En el paso c, el atacante puede determinar el valor de $r$ viendo la diferencia de bits entre $u$ y $w$, una vez calculado $r$ puede calcular $k$ como $k = s \oplus r$.
+    
+\end{solution}
+
+\question[10] Formally define the CDH assumption (i.e., first define a CDH experiment, and then use it to define what it means for the CDH problem to be hard). Prove that hardness of the CDH problem relative to $\mathcal{G}$ implies hardness of the discrete-logarithm problem relative to $\mathcal{G}$, and that hardness of the DDH problem relative to $\mathcal{G}$ implies hardness of the CDH problem relative to $\mathcal{G}$.
+\begin{solution}
+    \textbf{The Computational-Diffie-Hellman experiment} $\text{CDHLog}_{\mathcal{A},\mathcal{G}}(n)$:
+    \begin{enumerate}
+        \item Correr $\mathcal{G}(1^n)$ para obtener $(\mathbb{G}, q, g)$, donde $\mathbb{G}$ es un grupo cíclico de orden $q$ (con $\|q\| = n$), y $g$es un generador de $\mathbb{G}$.
+        \item Elegir uniformemente al azar $h_1$ y $h_2$ tales que: $h_1 = g^{x_1} \in \mathbb{G} \land h_2 = g^{x_2} \in \mathbb{G}$.
+        \item Se le da al adversario $\mathcal{A}$ $\mathbb{G}, q, g, h_1, h_2$, y devuelve $x \in \mathbb{Z}_q$.
+        \item El resultado del experimento es 1 si $x = g^{x_1 x_2}$, 0 en caso contrario.
+    \end{enumerate}
+    Decimos que el computational Diffie-Hellman problem relativo a $\mathcal{G}$ es difícil si para todo algoritmo PPT $\mathcal{A}$ existe una función negligible $\text{negl}$ tal que 
+    \[
+    \text{Pr}[\text{CDHLog}_{\mathcal{A},\mathcal{G}}(n) = 1] \leq \text{negl}(n).
+    \] \\ 
+    Prueba CDH Hard $\implies$ DLog hard: \\ 
+    Supongamos que CDH es difícil pero DLog no lo es. 
+    Entonces existe un adversario $\mathcal{A}$ que, dado $(\mathbb{G}, q, g, h)$, encuentra un $x$ tal que $h = g^x$ con probabilidad no despreciable. \\
+    
+    Entonces existe un adversario $\mathcal{B}$ que rompe CDH:
+    \begin{enumerate}
+        \item $\mathcal{B}$ recibe $(\mathbb{G}, q, g, h_1, h_2)$.
+        \item Ejecuta $\mathcal{A}(\mathbb{G}, q, g, h_1)$ para obtener $x_1$ tal que $h_1 = g^{x_1}$.
+        \item Devuelve $h_2^{x_1}$.
+    \end{enumerate}
+    
+    Como:
+    \[
+    z = h_2^{x_1} = (g^{x_2})^{x_1} = g^{x_1 x_2}.
+    \]
+    
+    $\mathcal{B}$ resuelve CDH con probabilidad no despreciable, contradiciendo que CDH es difícil. \\
+    
+    Absurdo, por lo que DLog es difícil. \\ \\ 
+    
+    Defino el experimento de DDH antes de probar que implica CDH: \\ \\
+    \textbf{The Decisional-Diffie-Hellman experiment} $\text{DDH}_{\mathcal{A},\mathcal{G}}(n)$:
+    \begin{enumerate}
+        \item Correr $\mathcal{G}(1^n)$ para obtener $(\mathbb{G}, q, g)$, donde $\mathbb{G}$ es un grupo cíclico de orden $q$ (con $\|q\| = n$), y $g$ es un generador de $\mathbb{G}$.
+        \item Elegir uniformemente al azar $h_1$ y $h_2$ tales que: $h_1 = g^{x_1} \in \mathbb{G} \land h_2 = g^{x_2} \in \mathbb{G}$.
+        \item Elegir un $b \in \{0,1\}$ uniformemente al azar:
+        \begin{itemize}
+            \item Si $b = 1$, $z = g^{x_1 x_2}$.
+            \item Si $b = 0$, elegir $r \in \mathbb{Z}_q$ uniformemente al azar y definir $z = g^r$.
+        \end{itemize}
+        \item Se le da al adversario $\mathcal{A}$ $(\mathbb{G}, q, g, h_1, h_2, z)$, y devuelve un bit $b' \in \{0,1\}$.
+        \item El experimento devuelve 1 si y solo si $b' = b$.
+    \end{enumerate}
+    
+    Decimos que el problema DDH relativo a $\mathcal{G}$ es difícil si para todo algoritmo PPT $\mathcal{A}$ existe una función negligible $\text{negl}$ tal que:
+    \[
+    \Pr[\text{DDH}_{\mathcal{A},\mathcal{G}}(n) = 1] \leq \frac{1}{2} + \text{negl}(n).
+    \] 
+    Prueba DDH Hard $\implies$ CDH hard: \\ \\ 
+    Supongamos que DDH es difícil pero CDH no lo es. 
+    Entonces existe un adversario $\mathcal{A}$ que, dados $(\mathbb{G}, q, g, h_1, h_2)$, puede determinar $x = g^{x_1x_2}$ con probabilidad no despreciable. \\
+
+    Entonces existe un adversario $\mathcal{B}$ que rompe DDH:
+    \begin{enumerate}
+        \item $\mathcal{B}$ recibe $(\mathbb{G}, q, g, h_1, h_2, z)$.
+        \item Ejecuta $\mathcal{A}(\mathbb{G}, q, g, h_1, h_2)$ para obtener $z'$ tal que $z' = g^{x_1x_2}$.
+        \item Devuelve 1 si $z = z'$, 0 si no.
+    \end{enumerate}
+
+    De esta manera $\mathcal{B}$ resuelve DDH con probabilidad no despreciable, contradiciendo que DDH es difícil. \\
+    
+    Absurdo, por lo que CDH es difícil. \\ \\ 
+    
+    \end{solution}
+
+
+\question Suppose you know two El Gamal ciphertexts $\langle c_1,c_2\rangle$ and $\langle c'_1,c'_2\rangle$ that encrypt unknown plaintexts $m$ and $m'$. You also know the public key $h$ and cyclic group generator $g$.
+\begin{parts}
+    \part[5] What information can you infer about $m$ and $m'$ if you observe that $c_1=c'_1$?
+    \begin{solution}
+        Si $c_1=c'_1$ entonces el $y$ al azar que se eligió para cifrar es el mismo para el mensaje $m$ y $m'$. Por lo que si sabemos que mensaje era $m$ o $m'$ podemos recuperar el otro calculando: 
+        \[
+        \frac{c_2}{c'_2} = \frac{h^y \cdot m}{h^y \cdot m'} = \frac{m}{m'}
+        \]
+    \end{solution}
+    \part[5] What information can you infer about $m$ and $m'$ if you observe that $c_1=g\cdot c'_1$?
+    \begin{solution}
+        Sea $y$ el número que se eligió al azar para cifrar a $m'$, si $c_1=g\cdot c'_1$ entonces el número que se eligió al azar para cifrar a $m$ es igual a $y + 1$. Por lo que si sabemos que mensaje era $m$ o $m'$ podemos recuperar el otro calculando:
+        \[
+        \frac{c_2}{c'_2} = \frac{h^{y+1} \cdot m}{h^y \cdot m'} = \frac{h \cdot m}{m'}
+        \]
+        Como un atacante sabe el valor de la clave pública $h$, si conoce $m$ puede recuperar $m'$, y si conoce $m'$ puede recuperar el valor de $m$. 
+    \end{solution}
+\end{parts}
+
+
+\question[10] In class we showed that El Gamal encryption is {\em malleable}, and specifically that given a ciphertext $\langle c_1,c_2\rangle$ that is the encryption of some unknown message $m$, it is possible to produce a ciphertext $\langle c_1,c'_2\rangle$ that is the encryption of $\alpha\cdot m$ (for known $\alpha$). A receiver who receives both these ciphertexts might be suspicious since both ciphertexts share the first component. Show that it is possible to generate $\langle c'_1,c'_2\rangle$ that is the encryption of $\alpha\cdot m$, with $c'_1\neq c_1$ and $c'_2\neq c_2$.
+\begin{solution}
+    Si encripto un mensaje $m$ usando la encripción de El Gamal el ciphertext va a tener la forma: 
+    \[
+        \langle c_1,c_2\rangle = \langle g^y,h^y \cdot m\rangle = \langle g^y,g^{xy} \cdot m\rangle
+    \]
+
+    Para obtener un ciphertext que encripte $\alpha \cdot m$ pero que $c_1 \neq c'_1$, multiplico por un nuevo valor al azar $r$. 
+    Para esto multiplico por la "encripción de 1", que tiene la forma $\langle g^r, h^r \cdot 1 \rangle$:
+
+    \[
+        \langle c'_1,c'_2\rangle = \langle c_1 \cdot g^r,\; c_2 \cdot h^r \cdot \alpha \rangle
+    \]
+
+    Entonces:
+    \[
+        c'_1 = g^y \cdot g^r = g^{y+r}
+    \]
+    \[
+        c'_2 = (h^y \cdot m)\cdot h^r \cdot \alpha = h^{y+r} \cdot (\alpha \cdot m)
+    \]
+
+    Por lo tanto:
+    \[
+        \langle c'_1,c'_2\rangle = \langle g^{y+r},\; h^{y+r} \cdot (\alpha \cdot m)\rangle
+    \]
+\end{solution}
+
+
+\question[10] Explain why the RSA exponents $e$ and $d$ must always be odd numbers.
+\begin{solution}
+    Como $e$ tiene que ser coprimo con $\varphi(n)$, y como $\varphi(n) = (p-1)(q-1)$ con $p$ y $q$ primos, entonces $\varphi(n)$ es par. Por lo tanto, la única forma de que $e$ sea coprimo con $\varphi(n)$ es que $e$ sea impar, porque si no compartiría al 2 como divisor. Si $e$ no fuera coprimo con $\varphi(n)$, entonces no existiría el inverso multiplicativo de $e$, y si no existiera el inverso multiplicativo de $e$ no podríamos desencriptar mensajes. 
+
+    $d$ se define tal que $d \cdot e \equiv 1 \mod \varphi(n)$. Como $\varphi(n)$ es par, esto implica que $d \cdot e$ es impar. Dado que $e$ es impar, $d$ también tiene que ser impar.
+\end{solution}
+
+
+\question[10] Consider the RSA-based encryption scheme in which a user encrypts a message $m\in\{0,1\}^\ell$ with respect to the public key $\langle N,e\rangle$ by computing $\tilde{m}:=H(m)\parallel m$ and outputting the ciphertext $[\tilde{m}^e~\mathrm{mod}~N]$. (Here, let $H:\{0,1\}^\ell\rightarrow\{0,1\}^n$ and assume $\ell+n<\Vert N\Vert$.) The receiver recovers $\tilde{m}$ in the usual way and verifies that it has the correct form before outputting the $\ell$ least-significant bits as $m$. Prove or disprove that this scheme is CCA-secure if $H$ is modeled as a random oracle.
+\begin{solution}
+    Suponiendo que en el experimento de CCA el atacante no puede hacer querys respecto a los mensajes originales, el esquema es CCA-Secure porque un atacante en el experimento de CCA indistinguishability no puede usar el oráculo de encripción para obtener información de cual de los dos mensajes se encripto. Aunque RSA plano tiene la propiedad homomórfica y es vulnerable a ataques CCA, en este esquema el mensaje desencriptado tiene que tener una estructura válida de la forma $H(m) \parallel m$. \\
+
+    Además, tampoco sirve intentar encriptar mensajes parecidos o con pequeños cambios para comparar ciphertexts, porque el hash $H$ hace que incluso cambios mínimos en $m$ produzcan valores completamente distintos en $H(m)$, por lo que no se obtiene información útil sobre el mensaje original. \\
+
+    Entonces, aunque el atacante modifique un ciphertext usando la propiedad homomórfica de RSA, al desencriptarlo casi seguro se obtiene un valor que no tiene una estructura válida consistente con el hash $H$, por lo que el oráculo de desencripción lo rechaza y no brinda información útil sobre el plaintext original.
+\end{solution}
+
+
+
+\end{questions}
+
+\end{document}
